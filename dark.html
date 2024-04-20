@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Light and Dark</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: white;
+        }
+        #toggle-container {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+        }
+        label {
+            margin: 0 10px;
+        }
+        button {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Light and Dark</h1>
+    <div id="toggle-container">
+        <label for="abhishek-toggle">Abhishek</label>
+        <input type="checkbox" id="abhishek-toggle">
+        <label for="shasafar-toggle">ShaSafar</label>
+        <input type="checkbox" id="shasafar-toggle">
+    </div>
+    <button onclick="saveState()">Save</button>
+
+    <script>
+        // Check the stored state when the page is loaded
+        document.addEventListener("DOMContentLoaded", function() {
+            let abhishekState = localStorage.getItem("abhishekState");
+            let shasafarState = localStorage.getItem("shasafarState");
+
+            if (abhishekState === "true") {
+                document.getElementById("abhishek-toggle").checked = true;
+            }
+
+            if (shasafarState === "true") {
+                document.getElementById("shasafar-toggle").checked = true;
+            }
+        });
+
+        // Function to save the state of the toggles
+        function saveState() {
+            let abhishekState = document.getElementById("abhishek-toggle").checked;
+            let shasafarState = document.getElementById("shasafar-toggle").checked;
+
+            localStorage.setItem("abhishekState", abhishekState);
+            localStorage.setItem("shasafarState", shasafarState);
+
+            alert("Saved successfully!");
+        }
+    </script>
+</body>
+</html>
