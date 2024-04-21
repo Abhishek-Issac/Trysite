@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const Toggle = require('./models/toggle'); // Assuming toggle model is defined in a separate file
+const path = require('path');
 
 const app = express();
 app.use(express.json());
@@ -14,6 +15,16 @@ mongoose.connect('mongodb+srv://Project:Project0@cluster0.soxx9l1.mongodb.net/?r
 .catch(err => console.error('Error connecting to MongoDB:', err));
 
 // Define mongoose schema and model if needed
+
+// Serve index.html
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'index.html'));
+});
+
+// Serve dark.html
+app.get('/dark', (req, res) => {
+  res.sendFile(path.join(__dirname, 'dark.html'));
+});
 
 // Handle POST request to save toggle state
 app.post('/toggle', async (req, res) => {
