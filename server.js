@@ -1,55 +1,34 @@
 const express = require('express');
+const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
-const Toggle = require('./toggle'); // Assuming toggle model is defined in a separate file
-const path = require('path');
 
 const app = express();
-app.use(express.json());
+const PORT = process.env.PORT || 3000;
 
 // Connect to MongoDB
-mongoose.connect('mongodb://Project:Project0@ac-tf3gqzx-shard-00-00.soxx9l1.mongodb.net:27017,ac-tf3gqzx-shard-00-01.soxx9l1.mongodb.net:27017,ac-tf3gqzx-shard-00-02.soxx9l1.mongodb.net:27017/?ssl=true&replicaSet=atlas-76q97l-shard-0&authSource=admin&retryWrites=true&w=majority&appName=Cluster0', {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-})
-.then(() => console.log('Connected to MongoDB'))
-.catch(err => console.error('Error connecting to MongoDB:', err));
+mongoose.connect('mongodb://localhost:27017/darkangel', { useNewUrlParser: true, useUnifiedTopology: true });
+const db = mongoose.connection;
+db.once('open', () => console.log('Connected to MongoDB'));
+db.on('error', err => console.error('MongoDB connection error:', err));
 
-// Define mongoose schema and model if needed
+// Define schema and model for toggles
+const toggleSchema = new mongoose.Schema({
+    abhishek: Boolean,
+    shasafar: Boolean
+});
+const Toggle = mongoose.model('Toggle', toggleSchema);
 
-// Serve index.html
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'index.html'));
+app.use(bodyParser.json());
+
+// Route to save toggles to MongoDB
+app.post('/save-toggles', async (req, res) => {
+    try {
+        const { abhishek, shasafar } = req.body;
+        await Toggle.findOneAndUpdate({}, { abhishek, shasafar }, { upsert: true });
+        res.json({ success: true, message: 'Toggles saved successfully' });
+    } catch (error) {
+        res.status(500).json({ success: false, message: 'Failed to save toggles', error: error.message });
+    }
 });
 
-// Serve dark.html
-app.get('/dark', (req, res) => {
-  res.sendFile(path.join(__dirname, 'dark.html'));
-});
-
-// Handle POST request to save toggle state
-app.post('/toggle', async (req, res) => {
-  const { name, state } = req.body;
-  try {
-    const toggle = await Toggle.findOneAndUpdate({ name }, { state }, { upsert: true });
-    res.status(200).json(toggle);
-  } catch (err) {
-    res.status(500).json({ error: 'Internal Server Error' });
-  }
-});
-
-// Handle GET request to retrieve toggle state
-app.get('/toggle/:name', async (req, res) => {
-  const { name } = req.params;
-  try {
-    const toggle = await Toggle.findOne({ name });
-    res.status(200).json(toggle);
-  } catch (err) {
-    res.status(500).json({ error: 'Internal Server Error' });
-  }
-});
-
-// Start the server
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-});
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
