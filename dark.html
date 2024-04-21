@@ -3,89 +3,50 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ӄʟɖǟʀӄǟռɢɛʟ</title>
+    <title>Dark Angel</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            text-align: center;
             background-color: white;
-        }
-        #toggle-container {
-            margin-top: 20px;
-            display: flex;
-            justify-content: center;
-        }
-        label {
-            margin: 0 10px;
-        }
-        button {
-            margin-top: 20px;
+            text-align: center;
         }
     </style>
 </head>
 <body>
-    <h1>ӄʟɖǟʀӄǟռɢɛʟ</h1>
-    <div id="toggle-container">
-        <label for="abhishek-toggle">Abhishek</label>
-        <input type="checkbox" id="abhishek-toggle">
-        <label for="shasafar-toggle">ShaSafar</label>
-        <input type="checkbox" id="shasafar-toggle">
+    <h1>Dark Angel</h1>
+    <div>
+        <label for="abhishek">Abhishek:</label>
+        <input type="checkbox" id="abhishekToggle">
     </div>
-    <button onclick="saveState()">Save</button>
+    <div>
+        <label for="shasafar">ShaSafar:</label>
+        <input type="checkbox" id="shasafarToggle">
+    </div>
+    <button onclick="saveToggles()">Save</button>
 
     <script>
-        // Check the stored state when the page is loaded
-        document.addEventListener("DOMContentLoaded", function() {
-            let abhishekState = localStorage.getItem("abhishekState");
-            let shasafarState = localStorage.getItem("shasafarState");
-
-            if (abhishekState === "true") {
-                document.getElementById("abhishek-toggle").checked = true;
-            }
-
-            if (shasafarState === "true") {
-                document.getElementById("shasafar-toggle").checked = true;
-            }
-        });
-
-        // Function to save the state of the toggles
-        function saveState() {
-            let abhishekState = document.getElementById("abhishek-toggle").checked;
-            let shasafarState = document.getElementById("shasafar-toggle").checked;
-
-            localStorage.setItem("abhishekState", abhishekState);
-            localStorage.setItem("shasafarState", shasafarState);
-
-            // Send the state to the server to save in MongoDB
-            fetch('/toggle', {
+        // Function to save toggles to MongoDB
+        function saveToggles() {
+            const abhishekToggle = document.getElementById("abhishekToggle").checked;
+            const shasafarToggle = document.getElementById("shasafarToggle").checked;
+            
+            // Send data to MongoDB using AJAX or fetch API
+            // Example:
+            fetch('/save-toggles', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    name: 'Abhishek',
-                    state: abhishekState
+                    abhishek: abhishekToggle,
+                    shasafar: shasafarToggle
                 })
             })
             .then(response => response.json())
-            .then(data => console.log(data))
-            .catch(error => console.error('Error saving toggle state:', error));
-
-            fetch('/toggle', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    name: 'ShaSafar',
-                    state: shasafarState
-                })
+            .then(data => {
+                // Handle response if needed
+                console.log(data);
             })
-            .then(response => response.json())
-            .then(data => console.log(data))
-            .catch(error => console.error('Error saving toggle state:', error));
-
-            alert("Saved successfully!");
+            .catch(error => console.error('Error:', error));
         }
     </script>
 </body>
