@@ -6,7 +6,8 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 // Connect to MongoDB
-mongoose.connect('mongodb://localhost:27017/darkangel', { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect('mongodb://Project:Project0@ac-tf3gqzx-shard-00-00.soxx9l1.mongodb.net:27017,ac-tf3gqzx-shard-00-01.soxx9l1.mongodb.net:27017,ac-tf3gqzx-shard-00-02.soxx9l1.mongodb.net:27017/?ssl=true&replicaSet=atlas-76q97l-shard-0&authSource=admin&retryWrites=true&w=majority&appName=Cluster0
+', { useNewUrlParser: true, useUnifiedTopology: true });
 const db = mongoose.connection;
 db.once('open', () => console.log('Connected to MongoDB'));
 db.on('error', err => console.error('MongoDB connection error:', err));
