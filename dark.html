@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Light and Dark</title>
+    <title>ӄʟɖǟʀӄǟռɢɛʟ</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -24,7 +24,7 @@
     </style>
 </head>
 <body>
-    <h1>Light and Dark</h1>
+    <h1>ӄʟɖǟʀӄǟռɢɛʟ</h1>
     <div id="toggle-container">
         <label for="abhishek-toggle">Abhishek</label>
         <input type="checkbox" id="abhishek-toggle">
@@ -55,6 +55,35 @@
 
             localStorage.setItem("abhishekState", abhishekState);
             localStorage.setItem("shasafarState", shasafarState);
+
+            // Send the state to the server to save in MongoDB
+            fetch('/toggle', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    name: 'Abhishek',
+                    state: abhishekState
+                })
+            })
+            .then(response => response.json())
+            .then(data => console.log(data))
+            .catch(error => console.error('Error saving toggle state:', error));
+
+            fetch('/toggle', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    name: 'ShaSafar',
+                    state: shasafarState
+                })
+            })
+            .then(response => response.json())
+            .then(data => console.log(data))
+            .catch(error => console.error('Error saving toggle state:', error));
 
             alert("Saved successfully!");
         }
