@@ -1,6 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const Toggle = require('./models/toggle'); // Assuming toggle model is defined in a separate file
+const Toggle = require('./toggle'); // Assuming toggle model is defined in a separate file
 const path = require('path');
 
 const app = express();
