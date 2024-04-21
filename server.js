@@ -1,6 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const Toggle = require('./models/toggle');
+const Toggle = require('./models/toggle'); // Assuming toggle model is defined in a separate file
 
 const app = express();
 app.use(express.json());
@@ -13,13 +13,7 @@ mongoose.connect('mongodb+srv://Project:Project0@cluster0.soxx9l1.mongodb.net/?r
 .then(() => console.log('Connected to MongoDB'))
 .catch(err => console.error('Error connecting to MongoDB:', err));
 
-// Mongoose schema
-const toggleSchema = new mongoose.Schema({
-    name: String,
-    state: Boolean
-});
-
-const Toggle = mongoose.model('Toggle', toggleSchema);
+// Define mongoose schema and model if needed
 
 // Handle POST request to save toggle state
 app.post('/toggle', async (req, res) => {
@@ -44,7 +38,7 @@ app.get('/toggle/:name', async (req, res) => {
 });
 
 // Start the server
-const PORT = process.env.PORT || 3000; // Use the environment variable PORT if available, otherwise default to port 3000
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
