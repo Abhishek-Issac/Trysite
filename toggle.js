@@ -6,7 +6,7 @@ const app = express();
 app.use(express.json());
 
 // Connect to MongoDB
-mongoose.connect('mongodb+srv://Project:Project0@cluster0.soxx9l1.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0', {
+mongoose.connect('mongodb://Project:Project0@ac-tf3gqzx-shard-00-00.soxx9l1.mongodb.net:27017,ac-tf3gqzx-shard-00-01.soxx9l1.mongodb.net:27017,ac-tf3gqzx-shard-00-02.soxx9l1.mongodb.net:27017/?ssl=true&replicaSet=atlas-76q97l-shard-0&authSource=admin&retryWrites=true&w=majority&appName=Cluster0', {
   useNewUrlParser: true,
   useUnifiedTopology: true
 })
